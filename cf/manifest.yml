@@ -1,0 +1,17 @@
+---
+applications:
+  - name: webflux-rest-cnb
+    instances: 1
+    disk_quota: 320M
+    memory: 768M
+    docker:
+      image: robachmann/webflux-rest-cnb:1.0.0-200615094959
+    health-check-type: http
+    health-check-http-endpoint: /actuator/health
+    random-route: true
+    services:
+      - openweathermap
+    env:
+      TZ: Europe/Zurich
+      LOCATION: Ittigen,ch
+#      ENDPOINT: <insert weather-data-endpoint or omit for local demo>

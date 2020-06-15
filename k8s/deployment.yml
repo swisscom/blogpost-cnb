@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-data-client
+  labels:
+    app: weather-data-client
+spec:
+  selector:
+    matchLabels:
+      app: weather-data-client
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: weather-data-client
+    spec:
+      containers:
+        - name: weather-data-client
+          image: robachmann/webflux-rest-cnb:1.0.0-200615094959
+          resources:
+            requests:
+              cpu: 5m
+              memory: 768Mi
+            limits:
+              memory: 768Mi
+          env:
+            - name: vcap.services.openweathermap.credentials.appId
+              valueFrom:
+                secretKeyRef:
+                  name: openweathermap
+                  key: appId
+            - name: LOCATION
+              value: Basel,ch
+#            - name: ENDPOINT
+#              value: "<insert weather-data-endpoint or omit for local demo>"
+#            - name: PROXY_HOST
+#              value: "<insert proxy-host if necessary>"
+#            - name: PROXY_PORT
+#              value: "<insert proxy-port if necessary>"
+          ports:
+            - name: container-port
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: container-port
+            failureThreshold: 1
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: container-port
+            failureThreshold: 3
+            periodSeconds: 10
