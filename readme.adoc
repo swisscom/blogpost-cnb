@@ -1,0 +1,61 @@
+= Weather Data Client
+
+This project serves as a sample application to showcase Cloud Native Buildpacks.
+The corresponding blog post with more explanations is available on link:https://medium.com/@robachmann/cloud-native-buildpacks-to-unite-paas-and-caas-cac215f53442?sk=d58a6b273e34ace176be61654b3ab33c[Medium].
+
+
+== Overview
+
+This application just queries current weather conditions from the link:https://openweathermap.org/current[OpenWeatherMap API] for a configurable location and send them to another link:https://github.com/swisscom/cf-workshop/tree/master/backend/weather-data-consumer[backend] which processes and stores the results.A Kibana dashboard exists in the link:https://github.com/swisscom/cf-workshop/tree/master/backend/kibana[backend's project] to display persisted data.
+
+In order to query the link:https://openweathermap.org/current[OpenWeatherMap API], you will need to link:https://openweathermap.org/appid[sign up] for an API key.
+
+image::https://app.lucidchart.com/publicSegments/view/ce112f52-cff9-4844-9145-0cf3926f3ce1/image.png[Component Diagram]
+
+
+== Build
+
+There are three possible ways to build this application:
+
+1. If you are interested in a compiled Java archive, use `./gradlew assemble`
+2. If you'd like to use the link:https://buildpacks.io/docs/app-developer-guide/[pack cli] to create a Docker image, use `pack build webflux-rest-cnb:0.0.1 --builder cloudfoundry/cnb:cflinuxfs3`
+3. In case you want to try out `pack` support as introduced in Spring Boot 2.3, use `./gradlew bootBuildImage`
+
+For possibilities 2 and 3, these are the expected outputs:
+
+.pack build
+----
+include::gists/cnb-pack-build.log[]
+----
+<.> Invoking `pack build` with the desired image name and tag, and builder as arguments.
+<.> Pulling the builder image as provided as command argument.
+<.> Entering detection phase and listing which buildpacks will participate in the build process, e.g. _gradle_ in order to compile the source-code.
+<.> Printing the used JVM version, i.e. BellSoft Liberica JRE 11.0.7.
+<.> Confirmation after a successful build.
+
+../gradlew bootBuildImage
+----
+include::gists/cnb-gradle-build.log[]
+----
+<.> Invoking `./gradlew bootBuildImage` without additional arguments.
+<.> Pulling the builder image as configured by Spring Boot's Gradle plugin.
+<.> Entering detection phase and listing which buildpacks will participate in the build process. No _gradle_ this time as we invoke the build process from a gradle task itself.
+<.> Confirmation of a successful build.
+
+
+== Deploy
+
+There are two sample scripts to deploy the application to link:deploy-cf.sh[Cloud Foundry] and link:deploy-k8s.sh[Kubernetes], respectively.
+
+Remember to check and adjust parameters accordingly, e.g. the API key.
+
+
+== Configuration
+
+As stated in <<_overview>>, there are a couple of properties available to influence the application's behavior:
+
+1. To query data from link:https://openweathermap.org/current[OpenWeatherMap], you need to specify a valid `AppId`. The application expects it to be available in the environment variable `VCAP_SERVICES_OPENWEATHERMAP_CREDENTIALS_APPID` (see link:src/main/java/com/example/demo/config/ApiProperties.java[ApiProperties.java]) since the underlying link:https://docs.developer.swisscom.com/service-offerings/secretsstore.html[Secrets Store] in Cloud Foundry exposes it there. If deployed to Kubernetes, the link:k8s/deployment.yml[deployment] assigns the value from a given link:k8s/secret-openweathermap.yml[secret] to that environment variable.
+
+2. If you set the environment variable `ENDPOINT`, the application pushed queried weather conditions to that URL. Otherwise, it will just link:src/main/java/com/example/demo/adapters/filer/LoggingFiler.java[log] the results to _stdout_.
+
+3. If your Kubernetes cluster setup does not support direct access to the internet, you can configure an HTTP proxy to be used with the environment variables `PROXY_HOST` and `PROXY_PORT`.

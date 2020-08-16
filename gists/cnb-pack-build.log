@@ -1,0 +1,110 @@
+$ pack build robachmann/webflux-rest-cnb:0.0.1 --builder cloudfoundry/cnb:cflinuxfs3 # <.>
+cflinuxfs3: Pulling from cloudfoundry/cnb # <.>
+Digest: sha256:d5ca1dcd476f2acf987ab8944cf8d96a84a562693f060b253aa6deb5a9a639eb
+Status: Image is up to date for cloudfoundry/cnb:cflinuxfs3
+full-cnb-cf: Pulling from paketo-buildpacks/run
+Digest: sha256:cff7b091c38c21434c9e03c360283b6611c3bd16d28cf70493da00248c1d6d22
+Status: Image is up to date for gcr.io/paketo-buildpacks/run:full-cnb-cf
+0.8.0: Pulling from buildpacksio/lifecycle
+Digest: sha256:48dfb79e342fdeb68a1bf310b33b349269b2919cb5029e0b7184b84e82fc0bb3
+Status: Image is up to date for buildpacksio/lifecycle:0.8.0
+===> DETECTING # <.>
+[detector] 6 of 15 buildpacks participating
+[detector] paketo-buildpacks/bellsoft-liberica 2.8.0
+[detector] paketo-buildpacks/gradle            1.3.1
+[detector] paketo-buildpacks/executable-jar    1.2.7
+[detector] paketo-buildpacks/apache-tomcat     1.3.0
+[detector] paketo-buildpacks/dist-zip          1.3.5
+[detector] paketo-buildpacks/spring-boot       1.5.7
+===> ANALYZING
+[analyzer] Restoring metadata for "paketo-buildpacks/bellsoft-liberica:jre" from app image
+[analyzer] Restoring metadata for "paketo-buildpacks/bellsoft-liberica:jvmkill" from app image
+[analyzer] Restoring metadata for "paketo-buildpacks/bellsoft-liberica:link-local-dns" from app image
+[analyzer] Restoring metadata for "paketo-buildpacks/bellsoft-liberica:memory-calculator" from app image
+[analyzer] Restoring metadata for "paketo-buildpacks/bellsoft-liberica:openssl-security-provider" from app image
+[analyzer] Restoring metadata for "paketo-buildpacks/bellsoft-liberica:security-providers-configurer" from app image
+[analyzer] Restoring metadata for "paketo-buildpacks/bellsoft-liberica:class-counter" from app image
+[analyzer] Restoring metadata for "paketo-buildpacks/bellsoft-liberica:java-security-properties" from app image
+[analyzer] Restoring metadata for "paketo-buildpacks/bellsoft-liberica:jdk" from cache
+[analyzer] Restoring metadata for "paketo-buildpacks/gradle:application" from cache
+[analyzer] Restoring metadata for "paketo-buildpacks/gradle:cache" from cache
+[analyzer] Restoring metadata for "paketo-buildpacks/executable-jar:class-path" from app image
+===> RESTORING
+[restorer] Restoring data for "paketo-buildpacks/bellsoft-liberica:jdk" from cache
+[restorer] Restoring data for "paketo-buildpacks/gradle:application" from cache
+[restorer] Restoring data for "paketo-buildpacks/gradle:cache" from cache
+===> BUILDING
+[builder]
+[builder] Paketo BellSoft Liberica Buildpack 2.8.0
+[builder]   https://github.com/paketo-buildpacks/bellsoft-liberica
+[builder]   Build Configuration:
+[builder]     $BP_JVM_VERSION              11.*            the Java version
+[builder]   Launch Configuration:
+[builder]     $BPL_JVM_HEAD_ROOM           0               the headroom in memory calculation
+[builder]     $BPL_JVM_LOADED_CLASS_COUNT  35% of classes  the number of loaded classes in memory calculation
+[builder]     $BPL_JVM_THREAD_COUNT        250             the number of threads in memory calculation
+[builder]   BellSoft Liberica JDK 11.0.7: Reusing cached layer
+[builder]   BellSoft Liberica JRE 11.0.7: Reusing cached layer # <.>
+[builder]   Memory Calculator 4.0.0: Reusing cached layer
+[builder]   Class Counter: Reusing cached layer
+[builder]   JVMKill Agent 1.16.0: Reusing cached layer
+[builder]   Link-Local DNS: Reusing cached layer
+[builder]   Java Security Properties: Reusing cached layer
+[builder]   Security Providers Configurer: Reusing cached layer
+[builder]   OpenSSL Certificate Loader: Reusing cached layer
+[builder]
+[builder] Paketo Gradle Buildpack 1.3.1
+[builder]   https://github.com/paketo-buildpacks/gradle
+[builder]   Build Configuration:
+[builder]     $BP_GRADLE_BUILD_ARGUMENTS  --no-daemon -x test build  the arguments to pass to Maven
+[builder]     $BP_GRADLE_BUILT_ARTIFACT   build/libs/*.[jw]ar        the built application artifact explicitly.  Supersedes $BP_GRADLE_BUILT_MODULE
+[builder]     $BP_GRADLE_BUILT_MODULE                                the module to find application artifact in
+[builder]     Creating cache directory /home/vcap/.gradle
+[builder]   Compiled Application: Contributing to layer
+[builder]     Executing gradlew --no-daemon -x test build
+[builder] To honour the JVM settings for this build a new JVM will be forked. Please consider using the daemon: https://docs.gradle.org/6.4/userguide/gradle_daemon.html.
+[builder] Daemon will be stopped at the end of the build stopping after processing
+[builder] > Task :compileJava
+[builder] > Task :processResources
+[builder] > Task :classes
+[builder] > Task :bootJar
+[builder] > Task :jar SKIPPED
+[builder] > Task :assemble
+[builder] > Task :check
+[builder] > Task :build
+[builder]
+[builder] BUILD SUCCESSFUL in 25s
+[builder] 3 actionable tasks: 3 executed
+[builder]   Removing source code
+[builder]
+[builder] Paketo Executable JAR Buildpack 1.2.7
+[builder]   https://github.com/paketo-buildpacks/executable-jar
+[builder]   Process types:
+[builder]     executable-jar: java -cp "${CLASSPATH}" ${JAVA_OPTS} org.springframework.boot.loader.JarLauncher
+[builder]     task:           java -cp "${CLASSPATH}" ${JAVA_OPTS} org.springframework.boot.loader.JarLauncher
+[builder]     web:            java -cp "${CLASSPATH}" ${JAVA_OPTS} org.springframework.boot.loader.JarLauncher
+[builder]
+[builder] Paketo Spring Boot Buildpack 1.5.7
+[builder]   https://github.com/paketo-buildpacks/spring-boot
+[builder]   Image labels:
+[builder]     org.springframework.boot.spring-configuration-metadata.json
+[builder]     org.springframework.boot.version
+===> EXPORTING
+[exporter] Reusing layer 'launcher'
+[exporter] Reusing layer 'paketo-buildpacks/bellsoft-liberica:class-counter'
+[exporter] Reusing layer 'paketo-buildpacks/bellsoft-liberica:java-security-properties'
+[exporter] Reusing layer 'paketo-buildpacks/bellsoft-liberica:jre'
+[exporter] Reusing layer 'paketo-buildpacks/bellsoft-liberica:jvmkill'
+[exporter] Reusing layer 'paketo-buildpacks/bellsoft-liberica:link-local-dns'
+[exporter] Reusing layer 'paketo-buildpacks/bellsoft-liberica:memory-calculator'
+[exporter] Reusing layer 'paketo-buildpacks/bellsoft-liberica:openssl-security-provider'
+[exporter] Reusing layer 'paketo-buildpacks/bellsoft-liberica:security-providers-configurer'
+[exporter] Reusing layer 'paketo-buildpacks/executable-jar:class-path'
+[exporter] Adding 1/1 app layer(s)
+[exporter] Adding layer 'config'
+[exporter] *** Images (1a2f98ff5d29):
+[exporter]       index.docker.io/robachmann/webflux-rest-cnb:0.0.1
+[exporter] Reusing cache layer 'paketo-buildpacks/bellsoft-liberica:jdk'
+[exporter] Adding cache layer 'paketo-buildpacks/gradle:application'
+[exporter] Adding cache layer 'paketo-buildpacks/gradle:cache'
+Successfully built image robachmann/webflux-rest-cnb:0.0.1 # <.>

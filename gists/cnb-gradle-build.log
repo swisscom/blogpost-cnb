@@ -1,0 +1,99 @@
+$ ./gradlew bootBuildImage # <.>
+
+> Task :bootBuildImage
+Building image 'docker.io/robachmann/webflux-rest-cnb:1.0.0-200615094959'
+
+ > Pulling builder image 'gcr.io/paketo-buildpacks/builder:base-platform-api-0.3' .................................................. # <.>
+ > Pulled builder image 'gcr.io/paketo-buildpacks/builder@sha256:aef5a354e144c2960a06db3abb771031d038f8d82be265d782e699f8ff56d94b'
+ > Pulling run image 'gcr.io/paketo-buildpacks/run:base-cnb' ..................................................
+ > Pulled run image 'gcr.io/paketo-buildpacks/run@sha256:f7f27462fb513a70370322ada08440a642d24a700056d4c6b8cbb344610bf486'
+ > Executing lifecycle version v0.8.0
+ > Using build cache volume 'pack-cache-29dbb9b7ddd7.build'
+
+ > Running creator
+    [creator]     ===> DETECTING
+    [creator]     5 of 15 buildpacks participating # <.>
+    [creator]     paketo-buildpacks/bellsoft-liberica 2.8.0
+    [creator]     paketo-buildpacks/executable-jar    1.2.7
+    [creator]     paketo-buildpacks/apache-tomcat     1.3.0
+    [creator]     paketo-buildpacks/dist-zip          1.3.5
+    [creator]     paketo-buildpacks/spring-boot       1.5.7
+    [creator]     ===> ANALYZING
+    [creator]     Previous image with name "docker.io/robachmann/webflux-rest-cnb:1.0.0-200615094959" not found
+    [creator]     ===> RESTORING
+    [creator]     ===> BUILDING
+    [creator]
+    [creator]     Paketo BellSoft Liberica Buildpack 2.8.0
+    [creator]       https://github.com/paketo-buildpacks/bellsoft-liberica
+    [creator]       Build Configuration:
+    [creator]         $BP_JVM_VERSION              11.*            the Java version
+    [creator]       Launch Configuration:
+    [creator]         $BPL_JVM_HEAD_ROOM           0               the headroom in memory calculation
+    [creator]         $BPL_JVM_LOADED_CLASS_COUNT  35% of classes  the number of loaded classes in memory calculation
+    [creator]         $BPL_JVM_THREAD_COUNT        250             the number of threads in memory calculation
+    [creator]       BellSoft Liberica JRE 11.0.7: Contributing to layer
+    [creator]         Downloading from https://github.com/bell-sw/Liberica/releases/download/11.0.7+10/bellsoft-jre11.0.7+10-linux-amd64.tar.gz
+    [creator]         Verifying checksum
+    [creator]         Expanding to /layers/paketo-buildpacks_bellsoft-liberica/jre
+    [creator]         Writing env.launch/JAVA_HOME.override
+    [creator]         Writing env.launch/MALLOC_ARENA_MAX.override
+    [creator]         Writing profile.d/active-processor-count.sh
+    [creator]       Memory Calculator 4.0.0: Contributing to layer
+    [creator]         Downloading from https://github.com/cloudfoundry/java-buildpack-memory-calculator/releases/download/v4.0.0/memory-calculator-4.0.0.tgz
+    [creator]         Verifying checksum
+    [creator]         Expanding to /layers/paketo-buildpacks_bellsoft-liberica/memory-calculator
+    [creator]         Writing profile.d/memory-calculator.sh
+    [creator]       Class Counter: Contributing to layer
+    [creator]         Copying to /layers/paketo-buildpacks_bellsoft-liberica/class-counter
+    [creator]       JVMKill Agent 1.16.0: Contributing to layer
+    [creator]         Downloading from https://github.com/cloudfoundry/jvmkill/releases/download/v1.16.0.RELEASE/jvmkill-1.16.0-RELEASE.so
+    [creator]         Verifying checksum
+    [creator]         Copying to /layers/paketo-buildpacks_bellsoft-liberica/jvmkill
+    [creator]         Writing env.launch/JAVA_OPTS.append
+    [creator]       Link-Local DNS: Contributing to layer
+    [creator]         Copying to /layers/paketo-buildpacks_bellsoft-liberica/link-local-dns
+    [creator]         Writing profile.d/link-local-dns.sh
+    [creator]       Java Security Properties: Contributing to layer
+    [creator]         Writing env.launch/JAVA_OPTS.append
+    [creator]         Writing env.launch/JAVA_SECURITY_PROPERTIES.override
+    [creator]       Security Providers Configurer: Contributing to layer
+    [creator]         Copying to /layers/paketo-buildpacks_bellsoft-liberica/security-providers-configurer
+    [creator]         Writing profile.d/security-providers-classpath.sh
+    [creator]         Writing profile.d/security-providers-configurer.sh
+    [creator]       OpenSSL Certificate Loader: Contributing to layer
+    [creator]         Copying to /layers/paketo-buildpacks_bellsoft-liberica/openssl-security-provider
+    [creator]         Writing profile.d/openssl-certificate-loader.sh
+    [creator]
+    [creator]     Paketo Executable JAR Buildpack 1.2.7
+    [creator]       https://github.com/paketo-buildpacks/executable-jar
+    [creator]         Writing env.launch/CLASSPATH
+    [creator]       Process types:
+    [creator]         executable-jar: java -cp "${CLASSPATH}" ${JAVA_OPTS} org.springframework.boot.loader.JarLauncher
+    [creator]         task:           java -cp "${CLASSPATH}" ${JAVA_OPTS} org.springframework.boot.loader.JarLauncher
+    [creator]         web:            java -cp "${CLASSPATH}" ${JAVA_OPTS} org.springframework.boot.loader.JarLauncher
+    [creator]
+    [creator]     Paketo Spring Boot Buildpack 1.5.7
+    [creator]       https://github.com/paketo-buildpacks/spring-boot
+    [creator]       Image labels:
+    [creator]         org.springframework.boot.spring-configuration-metadata.json
+    [creator]         org.springframework.boot.version
+    [creator]     ===> EXPORTING
+    [creator]     Adding layer 'launcher'
+    [creator]     Adding layer 'paketo-buildpacks/bellsoft-liberica:class-counter'
+    [creator]     Adding layer 'paketo-buildpacks/bellsoft-liberica:java-security-properties'
+    [creator]     Adding layer 'paketo-buildpacks/bellsoft-liberica:jre'
+    [creator]     Adding layer 'paketo-buildpacks/bellsoft-liberica:jvmkill'
+    [creator]     Adding layer 'paketo-buildpacks/bellsoft-liberica:link-local-dns'
+    [creator]     Adding layer 'paketo-buildpacks/bellsoft-liberica:memory-calculator'
+    [creator]     Adding layer 'paketo-buildpacks/bellsoft-liberica:openssl-security-provider'
+    [creator]     Adding layer 'paketo-buildpacks/bellsoft-liberica:security-providers-configurer'
+    [creator]     Adding layer 'paketo-buildpacks/executable-jar:class-path'
+    [creator]     Adding 1/1 app layer(s)
+    [creator]     Adding layer 'config'
+    [creator]     *** Images (41cb49057144):
+    [creator]           docker.io/robachmann/webflux-rest-cnb:1.0.0-200615094959
+
+Successfully built image 'docker.io/robachmann/webflux-rest-cnb:1.0.0-200615094959' # <.>
+
+BUILD SUCCESSFUL in 18s
+4 actionable tasks: 1 executed, 3 up-to-date
